@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رفيف ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #f0c27f;
+    --rose: #e8a0b0;
+    --deep: #1a0a2e;
+    --purple: #4a1a6e;
+    --pink: #ff6fa8;
+    --cyan: #00f5d4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--deep);
+    font-family: 'Tajawal', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 20px; height: 20px;
+    background: radial-gradient(circle, var(--pink), var(--gold));
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease, width 0.2s, height 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-trail {
+    width: 8px; height: 8px;
+    background: var(--cyan);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    mix-blend-mode: screen;
+  }
+
+  /* Stars */
+  .stars {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle var(--d) ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+
+  /* Hero section */
+  #hero {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  /* 3D floating orbs */
+  .orb-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    perspective: 800px;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: float3d var(--t) ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+  .orb-1 {
+    width: 300px; height: 300px;
+    background: radial-gradient(circle at 35% 35%, #ff6fa8aa, #4a1a6ecc, transparent);
+    top: 10%; left: 5%;
+    --t: 8s;
+    box-shadow: 0 0 80px 20px #ff6fa855;
+  }
+  .orb-2 {
+    width: 200px; height: 200px;
+    background: radial-gradient(circle at 40% 40%, #00f5d4aa, #1a0a2ecc, transparent);
+    top: 60%; right: 8%;
+    --t: 11s;
+    box-shadow: 0 0 60px 15px #00f5d433;
+  }
+  .orb-3 {
+    width: 150px; height: 150px;
+    background: radial-gradient(circle at 30% 30%, #f0c27faa, transparent);
+    top: 20%; right: 20%;
+    --t: 7s;
+    box-shadow: 0 0 40px 10px #f0c27f33;
+  }
+  .orb-4 {
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, #e8a0b0, transparent);
+    top: 70%; left: 20%;
+    --t: 9s;
+  }
+  @keyframes float3d {
+    0% { transform: translateY(0) translateZ(0) rotateX(0deg); }
+    33% { transform: translateY(-30px) translateZ(40px) rotateX(5deg); }
+    66% { transform: translateY(20px) translateZ(-20px) rotateX(-3deg); }
+    100% { transform: translateY(0) translateZ(0) rotateX(0deg); }
+  }
+
+  /* Name display */
+  .name-wrapper {
+    position: relative;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .name-label {
+    font-size: 1.1rem;
+    color: var(--rose);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+    margin-bottom: 10px;
+  }
+
+  .main-name {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(6rem, 15vw, 14rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, #f0c27f, #ff6fa8, #00f5d4, #f0c27f);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s ease infinite, fadeUp 1.2s ease 0.2s both;
+    position: relative;
+    filter: drop-shadow(0 0 30px rgba(240, 194, 127, 0.5));
+  }
+
+  .name-3d-shadow {
+    position: absolute;
+    top: 8px; left: 8px;
+    font-size: clamp(6rem, 15vw, 14rem);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 2px rgba(255,111,168,0.2);
+    z-index: -1;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .subtitle {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.6);
+    margin-top: 15px;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll indicator */
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--gold);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    animation: bounce 2s ease-in-out infinite;
+    opacity: 0.7;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  /* Cards section */
+  #cards {
+    position: relative;
+    z-index: 1;
+    padding: 80px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-title {
+    text-align: center;
+    font-size: 1rem;
+    letter-spacing: 0.5em;
+    color: var(--rose);
+    text-transform: uppercase;
+    margin-bottom: 60px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.8s ease;
+  }
+  .section-title.visible { opacity: 1; transform: translateY(0); }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+
+  .card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 24px;
+    padding: 40px 30px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transform: translateY(40px);
+    opacity: 0;
+    transition: all 0.6s ease;
+    overflow: hidden;
+  }
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(240, 194, 127, 0.3);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.3), 0 0 40px rgba(240,194,127,0.1);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,111,168,0.05) 0%, transparent 60%);
+    transform: scale(0);
+    transition: transform 0.6s ease;
+    pointer-events: none;
+  }
+  .card:hover::before { transform: scale(1); }
+
+  .card-icon {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    display: block;
+    animation: iconFloat 3s ease-in-out infinite;
+  }
+  @keyframes iconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .card h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 15px;
+  }
+  .card p {
+    color: rgba(255,255,255,0.65);
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  /* Quote section */
+  #quote {
+    position: relative;
+    z-index: 1;
+    padding: 120px 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .quote-bg {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(255,111,168,0.08), transparent 60%);
+    border-radius: 50%;
+    animation: pulsate 5s ease-in-out infinite;
+  }
+  @keyframes pulsate {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+  }
+
+  .big-quote {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 700;
+    color: white;
+    max-width: 750px;
+    margin: 0 auto;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+  }
+  .big-quote.visible { opacity: 1; transform: translateY(0); }
+  .big-quote span {
+    background: linear-gradient(135deg, var(--gold), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .quote-author {
+    margin-top: 30px;
+    color: var(--rose);
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    position: relative;
+    z-index: 1;
+    opacity: 0;
+    transition: all 1s ease 0.3s;
+  }
+  .quote-author.visible { opacity: 1; }
+
+  /* Turkey section */
+  #turkey {
+    position: relative;
+    z-index: 1;
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .turkey-card {
+    background: linear-gradient(135deg, rgba(255,111,168,0.08), rgba(0,245,212,0.05));
+    border: 1px solid rgba(255,111,168,0.2);
+    border-radius: 32px;
+    padding: 60px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.8s ease;
+  }
+  .turkey-card.visible { opacity: 1; transform: scale(1); }
+  .turkey-card::after {
+    content: '🌙';
+    position: absolute;
+    top: 20px; left: 30px;
+    font-size: 2rem;
+    opacity: 0.3;
+  }
+  .turkey-card::before {
+    content: '⭐';
+    position: absolute;
+    bottom: 20px; right: 30px;
+    font-size: 1.5rem;
+    opacity: 0.3;
+  }
+
+  .turkey-flag { font-size: 4rem; margin-bottom: 20px; display: block; }
+
+  .turkey-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+
+  .turkey-text {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.1rem;
+    line-height: 2;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Final message */
+  #finale {
+    position: relative;
+    z-index: 1;
+    padding: 150px 20px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .finale-text {
+    font-size: clamp(2rem, 6vw, 5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, #f0c27f, #ff6fa8, #00f5d4);
+    background-size: 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease infinite;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+    line-height: 1.4;
+  }
+  .finale-text.visible { opacity: 1; transform: translateY(0); }
+
+  .finale-sub {
+    margin-top: 25px;
+    color: rgba(255,255,255,0.5);
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    opacity: 0;
+    transition: all 1s ease 0.4s;
+  }
+  .finale-sub.visible { opacity: 1; }
+
+  /* Floating particles */
+  .particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+    font-size: 1.2rem;
+    animation: particleDrift var(--dur) linear infinite;
+    opacity: 0.15;
+  }
+  @keyframes particleDrift {
+    0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.15; }
+    90% { opacity: 0.15; }
+    100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .cards-grid { grid-template-columns: 1fr; }
+    .turkey-card { padding: 40px 25px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="trail"></div>
+
+<!-- Stars background -->
+<div class="stars" id="stars"></div>
+
+<!-- Floating particles -->
+<div id="particles"></div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb-container">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <div class="name-wrapper">
+    <div class="name-label">✦ إهداء خاص لـ ✦</div>
+    <div class="main-name">رفيف</div>
+    <div class="subtitle">صديقة من ذهب</div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>اكتشف</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- CARDS -->
+<section id="cards">
+  <div class="section-title">✦ لماذا رفيف مميزة ✦</div>
+  <div class="cards-grid">
+    <div class="card">
+      <span class="card-icon">🌟</span>
+      <h3>دايماً تساعدني</h3>
+      <p>ما في لحظة طلبت فيها مساعدتك وما وجدتك، دايماً قدامي تحملين إيدي وتوريني الطريق</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🤝</span>
+      <h3>تقف معي دايماً</h3>
+      <p>في أصعب اللحظات واحلاها، أنتِ ثابتة مثل النجم في السما، ما بتتزعزعي ولا بتخليني لحالي</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">💎</span>
+      <h3>استبرق ورفيف</h3>
+      <p>بعض الصداقات بتكون أكثر من مجرد كلمة، أنتِ وأنا قصة حلوة بتستاهل تنحكى</p>
+    </div>
+    <div class="card">
+      <span class="card-icon">🌙</span>
+      <h3>روح جميلة</h3>
+      <p>قلبك كبير وروحك أجمل، كل من يعرفك بيحس بالدفا والأمان حتى بالمحادثات الصغيرة</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote">
+  <div class="quote-bg"></div>
+  <div class="big-quote">
+    "الصديقة الحقيقية مش بس تكون جنبك وقت الضحكة.. بتكون <span>قبلتها وبعدها</span>، بالدموع والبهجة، بالصعب والسهل"
+  </div>
+  <div class="quote-author">— وهاي أنتِ يا رفيف 🌸</div>
+</section>
+
+<!-- TURKEY -->
+<section id="turkey">
+  <div class="turkey-card">
+    <span class="turkey-flag">🇹🇷</span>
+    <div class="turkey-title">حياتم بتركيا</div>
+    <p class="turkey-text">
+      شخص بيعيش بأوروبا وتركيا ويشيل حياة كاملة على أكتافه، هاد مش سهل..
+      <br><br>
+      بس رفيف مش ناس عاديين، هي قوية وذكية وعارفة كيف تحمل كل شي بجمال
+      <br><br>
+      ✨ إسطنبول والبوسفور وأنتِ.. مزيج من القوة والحلاوة ✨
+    </p>
+  </div>
+</section>
+
+<!-- FINALE -->
+<section id="finale">
+  <div class="finale-text">
+    شكراً يا رفيف 💛
+  </div>
+  <div class="finale-sub">
+    من استبرق.. بكل المحبة 🌸
+  </div>
+</section>
+
+<script>
+  // Stars
+  const starsContainer = document.getElementById('stars');
+  for(let i = 0; i < 150; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.cssText = `
+      top: ${Math.random()*100}%;
+      left: ${Math.random()*100}%;
+      --d: ${2 + Math.random()*4}s;
+      animation-delay: ${Math.random()*4}s;
+      width: ${1 + Math.random()*2}px;
+      height: ${1 + Math.random()*2}px;
+      opacity: ${0.1 + Math.random()*0.5};
+    `;
+    starsContainer.appendChild(star);
+  }
+
+  // Particles
+  const emojis = ['✨', '💫', '🌸', '⭐', '💛', '🌟', '💕', '🦋'];
+  const particleContainer = document.getElementById('particles');
+  for(let i = 0; i < 15; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    p.style.cssText = `
+      left: ${Math.random()*100}%;
+      --dur: ${8 + Math.random()*12}s;
+      animation-delay: ${Math.random()*10}s;
+    `;
+    particleContainer.appendChild(p);
+  }
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('trail');
+  let mx = 0, my = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+    setTimeout(() => {
+      trail.style.left = mx + 'px';
+      trail.style.top = my + 'px';
+    }, 100);
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if(entry.isIntersecting) {
+        if(entry.target.classList.contains('card')) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+        } else {
+          entry.target.classList.add('visible');
+        }
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.section-title, .card, .big-quote, .quote-author, .turkey-card, .finale-text, .finale-sub').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Card stagger
+  document.querySelectorAll('.card').forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.15}s`;
+  });
+
+  // 3D tilt on cards
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `translateY(-10px) scale(1.02) rotateY(${x*15}deg) rotateX(${-y*10}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
+</script>
+</body>
+</html>
